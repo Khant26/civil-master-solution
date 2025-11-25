@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+
+.font-oswald {
+  font-family: 'Oswald', sans-serif;
+}
+
+.text-sm {
+  font-size: 1rem; /* Increased font size */
+}
+
+.font-semibold {
+  font-size: 1.25rem; /* Increased font size for headings */
+}
