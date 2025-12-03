@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Nav = () => {
+  const { t } = useLanguage();
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -69,7 +72,7 @@ const Nav = () => {
               }`}
               onClick={() => setMenuOpen(false)}
             >
-              Home
+              {t('nav.home')}
             </Link>
             <Link
               to="/product"
@@ -80,7 +83,7 @@ const Nav = () => {
               }`}
               onClick={() => setMenuOpen(false)}
             >
-              Product
+              {t('nav.product')}
             </Link>
             <Link
               to="/projects-reference"
@@ -91,7 +94,7 @@ const Nav = () => {
               }`}
               onClick={() => setMenuOpen(false)}
             >
-              Projects Reference
+              {t('nav.projectsReference')}
             </Link>
             <Link
               to="/news-article"
@@ -102,8 +105,11 @@ const Nav = () => {
               }`}
               onClick={() => setMenuOpen(false)}
             >
-              News & Article
+              {t('nav.newsAndArticles')}
             </Link>
+            <div className="px-4 py-2">
+              <LanguageSwitcher />
+            </div>
           </div>
         )}
       </div>
@@ -118,7 +124,7 @@ const Nav = () => {
               : 'text-white hover:text-cyan-400'
           }`}
         >
-          HOME
+          {t('nav.home').toUpperCase()}
         </Link>
         <Link
           to="/product"
@@ -128,7 +134,7 @@ const Nav = () => {
               : 'text-white hover:text-cyan-400'
           }`}
         >
-          PRODUCT
+          {t('nav.product').toUpperCase()}
         </Link>
         <Link
           to="/projects-reference"
@@ -138,7 +144,7 @@ const Nav = () => {
               : 'text-white hover:text-cyan-400'
           }`}
         >
-          PROJECTS REFERENCE
+          {t('nav.projectsReference').toUpperCase()}
         </Link>
         <Link
           to="/news-article"
@@ -148,8 +154,9 @@ const Nav = () => {
               : 'text-white hover:text-cyan-400'
           }`}
         >
-          NEWS & ARTICLE
+          {t('nav.newsAndArticles').toUpperCase()}
         </Link>
+        <LanguageSwitcher />
       </div>
     </nav>
   );

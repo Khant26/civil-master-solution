@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "home": "Home",
+    "product": "Product",
+    "projectsReference": "Projects Reference",
+    "newsAndArticles": "News & Articles"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "submit": "SUBMIT",
+    "cancel": "CANCEL",
+    "readMore": "Read More",
+    "viewProducts": "VIEW OUR PRODUCTS",
+    "requestInfo": "Request Information",
+    "close": "Close",
+    "search": "Search",
+    "language": "Language"
+  },
+  "home": {
+    "hero": {
+      "title": "Building Excellence",
+      "subtitle": "Premium Construction Solutions",
+      "description": "Leading provider of high-quality construction materials and innovative building solutions for projects of all scales"
+    },
+    "about": {
+      "title": "About CMS",
+      "description": "Civil Master Solution Co., Ltd. is a leading provider of construction materials and engineering solutions. We specialize in delivering high-quality products that meet international standards",
+      "experience": "Years of Experience",
+      "projects": "Completed Projects",
+      "clients": "Satisfied Clients"
+    },
+    "services": {
+      "title": "Our Services",
+      "construction": {
+        "title": "Construction Materials",
+        "description": "High-quality concrete, steel, and building materials"
+      },
+      "engineering": {
+        "title": "Engineering Solutions",
+        "description": "Structural design and engineering consulting services"
+      },
+      "project": {
+        "title": "Project Management",
+        "description": "Complete project oversight and execution services"
+      }
+    },
+    "partners": "Partners",
+    "customers": "Customers",
+    "announcement": "Announcement"
+  },
+  "products": {
+    "title": "Our Products",
+    "description": "Discover our comprehensive range of premium construction materials and solutions",
+    "heroDescription": "We go beyond simply selling flooring materials, we enhance complete solutions. As structural design engineers, our focus is to understand your projects requirements and select the right products for the right application, ensuring performance, safety, and long-term value. Our products meet international quality standards and have been carefully selected and tested to ensure it can be designed, applied, and perform effectively in real projects.",
+    "mainApplications": "Main Applications",
+    "benefits": "Benefits",
+    "performances": "Performances",
+    "requestMoreInformation": "REQUEST MORE INFORMATION",
+    "noProductsAvailable": "No products available at the moment."
+  },
+  "news": {
+    "title": "Latest News",
+    "description": "Stay updated with the latest developments and announcements",
+    "readFullArticle": "Read Full Article",
+    "readMore": "Read More",
+    "backToNews": "Back to News",
+    "noNews": "No news available at the moment.",
+    "publishedOn": "Published on",
+    "keywords": "Keywords"
+  },
+  "projectReferences": {
+    "title": "Our Project References",
+    "failedToLoad": "Failed to load project references",
+    "noReferencesAvailable": "No project references available.",
+    "location": "Location",
+    "siteArea": "Site Area",
+    "contractor": "Contractor"
+  },
+  "requestForm": {
+    "title": "Please fill this form to get more information",
+    "productName": "Product",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "contact": "Contact Number",
+    "company": "Company Name",
+    "country": "Country",
+    "comments": "Additional Comments",
+    "commentsPlaceholder": "Any additional information or specific requirements...",
+    "requiredFields": "Please fill in all fields.",
+    "submitting": "SUBMITTING...",
+    "success": "Your request has been submitted successfully.",
+    "failed": "Failed to submit your request. Please try again."
+  },
+  "footer": {
+    "company": "Civil Master Solution Co., Ltd.",
+    "description": "Your Trusted Partner in Industrial Floor Solutions.",
+    "contact": "Contact",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us",
+    "copyright": "© 2025 Civil Master Solution Co., Ltd. All rights reserved."
+  },
+  "chatbot": {
+    "title": "CMS Bot",
+    "status": "Online",
+    "placeholder": "Type your message...",
+    "greeting": "Hello! I'm CMS Bot. How can I help you today?",
+    "typing": "Typing...",
+    "error": "Sorry, I'm having trouble connecting right now. Please try again later.",
+    "errorProcessing": "Sorry, I couldn't process your message."
+  }
+}
