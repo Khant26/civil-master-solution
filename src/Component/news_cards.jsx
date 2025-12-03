@@ -13,8 +13,6 @@ const NewsCards = ({ image, title, description, date, onClick, newsItem }) => {
     }
     return '';
   };
-
-  console.log('NewsCards props:', { image, title, description, date });
   return (
     <div className="bg-gray-800 overflow-hidden hover:transform hover:scale-105 transition-transform duration-300">
       {/* Image */}

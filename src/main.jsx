@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { LanguageProvider } from './context/LanguageContext.jsx'
+import { CacheProvider } from './context/CacheContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <LanguageProvider>
-      <App />
-    </LanguageProvider>
+    <CacheProvider>
+      <LanguageProvider>
+        <App />
+      </LanguageProvider>
+    </CacheProvider>
   </StrictMode>,
 )

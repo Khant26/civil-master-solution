@@ -3,9 +3,10 @@ import Nav from '../Component/nav';
 import Reference1 from '../Component/reference_1';
 import Footer from '../Component/footer';
 import ChatBot from '../Component/ChatBot';
-import { apiService } from '../services/api';
+import { useCachedApi } from '../hooks/useCachedApi';
 
 const ProjectReference = () => {
+  const cachedApi = useCachedApi();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [references, setReferences] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,10 +16,10 @@ const ProjectReference = () => {
     const fetchProjectReferences = async () => {
       try {
         setLoading(true);
-        const response = await apiService.projectReferences.getAll();
+        const projectReferencesData = await cachedApi.projectReferences.getAll();
         
         // Sort projects by position (ascending order)
-        const sortedReferences = response.data.sort((a, b) => (a.position || 999) - (b.position || 999));
+        const sortedReferences = projectReferencesData.sort((a, b) => (a.position || 999) - (b.position || 999));
         
         const transformedReferences = sortedReferences.map((project) => ({
           title: project.project_name,
@@ -40,7 +41,7 @@ const ProjectReference = () => {
     };
 
     fetchProjectReferences();
-  }, []);
+  }, [cachedApi]);
 
   // Keyboard navigation
   useEffect(() => {

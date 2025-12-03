@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from '../context/LanguageContext';
+import { useCachedApi } from '../hooks/useCachedApi';
 import Nav from "../Component/nav";
 import Footer from "../Component/footer";
 import LogoLoop from "../Component/LogoLoop";
@@ -7,7 +9,7 @@ import HeroProjectReference from "../Component/hero_project_reference";
 import PartnerCard from "../Component/partner_card";
 import CustomerCard from "../Component/customer_card";
 import ChatBot from "../Component/ChatBot";
-import { apiService } from "../services/api";
+import CacheDebugPanel from "../Component/CacheDebugPanel";
 import "./home.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -16,33 +18,31 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 const Home = () => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
-  const [partners, setPartners] = useState([]);
-  const [customers, setCustomers] = useState([]);
+  const cachedApi = useCachedApi();
+  const [transformedPartners, setTransformedPartners] = useState([]);
+  const [transformedCustomers, setTransformedCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch data from API
+  // Fetch partnerships and customers data with caching
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [partnersResponse, customersResponse] = await Promise.all([
-          apiService.partnerships.getAll(),
-          apiService.customers.getAll(),
+        const [partnershipsData, customersData] = await Promise.all([
+          cachedApi.partnerships.getAll(),
+          cachedApi.customers.getAll()
         ]);
 
-        // Transform API data to match LogoLoop component format
-        const partnerLogos = partnersResponse.data.map((partner, index) => {
-          // Get image URL and provide fallback if empty
+        // Transform partnerships data
+        const partnerLogos = partnershipsData.map((partner, index) => {
           const imageUrl = partner.partner_image?.[0];
           const fallbackImage = `https://via.placeholder.com/100x80/4B5563/FFFFFF?text=${encodeURIComponent(
             partner.partner_name || "Partner"
           )}`;
-          const finalImage =
-            imageUrl && imageUrl.trim() !== "" ? imageUrl : fallbackImage;
-
-          console.log("Partner:", partner.partner_name, "Image:", finalImage);
+          const finalImage = imageUrl && imageUrl.trim() !== "" ? imageUrl : fallbackImage;
 
           return {
             node: (
@@ -57,21 +57,13 @@ const Home = () => {
           };
         });
 
-        const customerLogos = customersResponse.data.map((customer, index) => {
-          // Get image URL and provide fallback if empty
+        // Transform customers data
+        const customerLogos = customersData.map((customer, index) => {
           const imageUrl = customer.customer_image?.[0];
           const fallbackImage = `https://via.placeholder.com/100x80/3B82F6/FFFFFF?text=${encodeURIComponent(
             customer.customer_name || "Customer"
           )}`;
-          const finalImage =
-            imageUrl && imageUrl.trim() !== "" ? imageUrl : fallbackImage;
-
-          console.log(
-            "Customer:",
-            customer.customer_name,
-            "Image:",
-            finalImage
-          );
+          const finalImage = imageUrl && imageUrl.trim() !== "" ? imageUrl : fallbackImage;
 
           return {
             node: (
@@ -86,22 +78,20 @@ const Home = () => {
           };
         });
 
-        setPartners(partnerLogos);
-        setCustomers(customerLogos);
+        setTransformedPartners(partnerLogos);
+        setTransformedCustomers(customerLogos);
       } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to load partner and customer data");
-
-        // Fallback to empty arrays or you could use default data
-        setPartners([]);
-        setCustomers([]);
+        console.error('Error fetching data:', err);
+        setError('Failed to load data');
+        setTransformedPartners([]);
+        setTransformedCustomers([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [cachedApi]);
 
   const handleViewProducts = () => {
     navigate("/product");
@@ -135,7 +125,7 @@ const Home = () => {
                   onClick={handleViewProducts}
                   className="bg-white text-gray-900 px-6 lg:px-8 xl:px-10 2xl:px-10 3xl:px-10 py-3 lg:py-4 2xl:py-4 3xl:py-4 pl-6 lg:pl-8 2xl:pl-8 3xl:pl-8 text-sm lg:text-base 2xl:text-base 3xl:text-base font-semibold font-poppins hover:bg-gray-100 transition-colors cursor-pointer"
                 >
-                  VIEW OUR PRODUCTS
+                  {t('common.viewProducts')}
                 </button>
               </div>
             </div>
@@ -452,12 +442,12 @@ const Home = () => {
           style={{ overflow: "hidden" }}
         >
           <h2 className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-4xl 3xl:text-4xl font-bold text-white text-center mb-3 lg:mb-4 2xl:mb-4 3xl:mb-4">
-            Partners
+            {t('home.partners')}
           </h2>
 
           {loading ? (
             <div className="text-center text-white mb-8 lg:mb-10 xl:mb-12 2xl:mb-12 3xl:mb-12">
-              Loading partners...
+              {t('common.loading')}
             </div>
           ) : error ? (
             <div className="text-center text-red-400 mb-8 lg:mb-10 xl:mb-12 2xl:mb-12 3xl:mb-12">
@@ -465,7 +455,7 @@ const Home = () => {
             </div>
           ) : (
             <div className="flex flex-wrap justify-center gap-4 lg:gap-6 xl:gap-8 2xl:gap-8 3xl:gap-8 mb-4 lg:mb-5 2xl:mb-5 3xl:mb-5">
-              {partners.slice(0, 8).map((partner, index) => (
+              {transformedPartners.slice(0, 8).map((partner, index) => (
                 <div key={index} className="flex justify-center">
                   {partner.node}
                 </div>
@@ -474,7 +464,7 @@ const Home = () => {
           )}
 
           <h2 className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-4xl 3xl:text-4xl font-bold text-white text-center mb-2">
-            Customers
+            {t('home.customers')}
           </h2>
 
           {loading ? (
@@ -495,7 +485,7 @@ const Home = () => {
                 className="[&::-webkit-scrollbar]:hidden overflow-hidden"
               >
                 <LogoLoop
-                  logos={customers}
+                  logos={transformedCustomers}
                   speed={80}
                   direction="right"
                   logoHeight={80}
@@ -519,7 +509,7 @@ const Home = () => {
                 className="[&::-webkit-scrollbar]:hidden overflow-hidden"
               >
                 <LogoLoop
-                  logos={customers}
+                  logos={transformedCustomers}
                   speed={80}
                   direction="right"
                   logoHeight={80}
@@ -541,6 +531,9 @@ const Home = () => {
 
       {/* ChatBot */}
       <ChatBot />
+      
+      {/* Cache Debug Panel - Remove this line if you don't want to see cache stats */}
+      <CacheDebugPanel isVisible={true} />
     </div>
   );
 };

@@ -3,9 +3,10 @@ import Nav from "../Component/nav";
 import ProductCard from "../Component/product_card";
 import Footer from "../Component/footer";
 import ChatBot from "../Component/ChatBot";
-import { apiService } from "../services/api";
+import { useCachedApi } from "../hooks/useCachedApi";
 
 const Product = () => {
+  const cachedApi = useCachedApi();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,10 +15,10 @@ const Product = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await apiService.products.getAll();
+        const productsData = await cachedApi.products.getAll();
 
         // Sort products by position (ascending order)
-        const sortedProducts = response.data.sort(
+        const sortedProducts = productsData.sort(
           (a, b) => (a.position || 999) - (b.position || 999)
         );
 
@@ -43,7 +44,7 @@ const Product = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [cachedApi]);
 
   if (loading) {
     return (

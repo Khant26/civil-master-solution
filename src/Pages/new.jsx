@@ -5,9 +5,10 @@ import Footer from '../Component/footer';
 import NewsCards from '../Component/news_cards';
 import ContentRenderer from '../Component/ContentRenderer';
 import ChatBot from '../Component/ChatBot';
-import { apiService } from '../services/api';
+import { useCachedApi } from '../hooks/useCachedApi';
 
 const New = () => {
+  const cachedApi = useCachedApi();
   const [newsData, setNewsData] = useState([]);
   const [selectedNews, setSelectedNews] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,9 +22,9 @@ const New = () => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const response = await apiService.news.getAll();
-        console.log('News data:', response.data);
-        setNewsData(response.data);
+        const newsData = await cachedApi.news.getAll();
+        console.log('News data:', newsData);
+        setNewsData(newsData);
 
         // Check for news ID in URL parameters
         const newsId = searchParams.get('id');
@@ -40,7 +41,7 @@ const New = () => {
     };
 
     fetchNews();
-  }, [searchParams]);
+  }, [searchParams, cachedApi]);
 
   useEffect(() => {
     setCurrentPage(1);

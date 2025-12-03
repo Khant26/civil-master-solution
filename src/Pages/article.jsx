@@ -5,9 +5,10 @@ import Footer from '../Component/footer';
 import ArticleRow from '../Component/article_row';
 import ContentRenderer from '../Component/ContentRenderer';
 import ChatBot from '../Component/ChatBot';
-import { apiService } from '../services/api';
+import { useCachedApi } from '../hooks/useCachedApi';
 
 const Article = () => {
+  const cachedApi = useCachedApi();
   const [articlesData, setArticlesData] = useState([]);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -43,20 +44,20 @@ const Article = () => {
     const fetchArticles = async () => {
       try {
         setLoading(true);
-        const response = await apiService.articles.getAll();
-        console.log('Articles data:', response.data);
-        setArticlesData(response.data);
+        const articlesData = await cachedApi.articles.getAll();
+        console.log('Articles data:', articlesData);
+        setArticlesData(articlesData);
 
         // Check for article ID in URL parameters
         const articleId = searchParams.get('id');
         if (articleId) {
           // First try to find by ID, then by index if ID is not found
-          let article = response.data.find(item => item.id == articleId);
+          let article = articlesData.find(item => item.id == articleId);
           if (!article) {
             // If not found by ID, try by index (for fallback)
             const index = parseInt(articleId);
-            if (!isNaN(index) && index >= 0 && index < response.data.length) {
-              article = response.data[index];
+            if (!isNaN(index) && index >= 0 && index < articlesData.length) {
+              article = articlesData[index];
             }
           }
           if (article) {
@@ -73,7 +74,7 @@ const Article = () => {
     };
 
     fetchArticles();
-  }, [searchParams]);
+  }, [searchParams, cachedApi]);
 
   useEffect(() => {
     const handleResize = () => {
