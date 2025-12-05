@@ -1,52 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Nav from "../Component/nav";
 import ProductCard from "../Component/product_card";
 import Footer from "../Component/footer";
 import ChatBot from "../Component/ChatBot";
-import { useCachedApi } from "../hooks/useCachedApi";
+import { useProducts } from "../hooks/useApiQueries";
 
 const Product = () => {
-  const cachedApi = useCachedApi();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: products = [], isLoading, error } = useProducts();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const productsData = await cachedApi.products.getAll();
+  // Sort products by position (ascending order)
+  const sortedProducts = products.sort(
+    (a, b) => (a.position || 999) - (b.position || 999)
+  );
 
-        // Sort products by position (ascending order)
-        const sortedProducts = productsData.sort(
-          (a, b) => (a.position || 999) - (b.position || 999)
-        );
+  // Transform API data to match the expected format
+  const transformedProducts = sortedProducts.map((product, index) => ({
+    title: product.product_name,
+    description: product.product_description,
+    main_applicationPoints: product.main_application || [],
+    benefit: product.benefit || [],
+    performance: product.performance || [],
+    images: product.product_image || [],
+    imagePosition: index % 2 === 0 ? "left" : "right", // Alternate positioning
+    theme: index % 2 === 0 ? "dark" : "light", // Alternate themes
+  }));
 
-        // Transform API data to match the expected format
-        const transformedProducts = sortedProducts.map((product, index) => ({
-          title: product.product_name,
-          description: product.product_description,
-          main_applicationPoints: product.main_application || [],
-          benefit: product.benefit || [],
-          performance: product.performance || [],
-          images: product.product_image || [],
-          imagePosition: index % 2 === 0 ? "left" : "right", // Alternate positioning
-          theme: index % 2 === 0 ? "dark" : "light", // Alternate themes
-        }));
-
-        setProducts(transformedProducts);
-      } catch (err) {
-        console.error("Error fetching products:", err);
-        setError("Failed to load products");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [cachedApi]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: "#000A14" }}>
         <Nav />
@@ -55,9 +34,7 @@ const Product = () => {
         </div>
       </div>
     );
-  }
-
-  if (error) {
+  }  if (error) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: "#000A14" }}>
         <Nav />
@@ -96,8 +73,8 @@ const Product = () => {
       {/* Products Grid */}
       <section style={{ backgroundColor: "#000A14" }}>
         <div className="w-full ">
-          {products.length > 0 ? (
-            products.map((product, index) => (
+          {transformedProducts.length > 0 ? (
+            transformedProducts.map((product, index) => (
               <ProductCard
                 key={index}
                 title={product.title}

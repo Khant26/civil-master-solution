@@ -1,47 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Nav from '../Component/nav';
 import Reference1 from '../Component/reference_1';
 import Footer from '../Component/footer';
 import ChatBot from '../Component/ChatBot';
-import { useCachedApi } from '../hooks/useCachedApi';
+import { useProjectReferences } from '../hooks/useApiQueries';
 
 const ProjectReference = () => {
-  const cachedApi = useCachedApi();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [references, setReferences] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: projectData = [], isLoading, error } = useProjectReferences();
 
-  useEffect(() => {
-    const fetchProjectReferences = async () => {
-      try {
-        setLoading(true);
-        const projectReferencesData = await cachedApi.projectReferences.getAll();
-        
-        // Sort projects by position (ascending order)
-        const sortedReferences = projectReferencesData.sort((a, b) => (a.position || 999) - (b.position || 999));
-        
-        const transformedReferences = sortedReferences.map((project) => ({
-          title: project.project_name,
-          images: project.project_image || [],
-          location: project.location,
-          monthYear: project.date_time,
-          siteArea: project.site_area,
-          contractMember: project.contractor,
-          layoutType: project.layout_type || 1
-        }));
-        
-        setReferences(transformedReferences);
-      } catch (err) {
-        console.error('Error fetching project references:', err);
-        setError('Failed to load project references');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProjectReferences();
-  }, [cachedApi]);
+  // Transform and sort project references using useMemo
+  const references = useMemo(() => {
+    // Sort projects by position (ascending order)
+    const sortedReferences = projectData.sort((a, b) => (a.position || 999) - (b.position || 999));
+    
+    return sortedReferences.map((project) => ({
+      title: project.project_name,
+      images: project.project_image || [],
+      location: project.location,
+      monthYear: project.date_time,
+      siteArea: project.site_area,
+      contractMember: project.contractor,
+      layoutType: project.layout_type || 1
+    }));
+  }, [projectData]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -53,9 +35,7 @@ const ProjectReference = () => {
       } else if (event.key === 'ArrowRight') {
         setCurrentSlide(currentSlide < references.length - 1 ? currentSlide + 1 : 0);
       }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
+    };    window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [currentSlide, references.length]);
 
@@ -70,7 +50,7 @@ const ProjectReference = () => {
     return () => clearInterval(autoSlide);
   }, [references.length]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: "#000A14" }}>
         <Nav />

@@ -14,19 +14,6 @@ const LanguageContext = createContext();
 export const LanguageProvider = ({ children }) => {
   const [currentLanguage, setCurrentLanguage] = useState('en');
 
-  // Load language from localStorage on component mount
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('language');
-    if (savedLanguage && translations[savedLanguage]) {
-      setCurrentLanguage(savedLanguage);
-    }
-  }, []);
-
-  // Save language to localStorage when it changes
-  useEffect(() => {
-    localStorage.setItem('language', currentLanguage);
-  }, [currentLanguage]);
-
   const changeLanguage = (language) => {
     if (translations[language]) {
       setCurrentLanguage(language);

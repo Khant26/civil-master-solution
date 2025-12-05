@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from '../context/LanguageContext';
-import { useCachedApi } from '../hooks/useCachedApi';
+import { useHomePageData } from '../hooks/useApiQueries';
 import Nav from "../Component/nav";
 import Footer from "../Component/footer";
 import LogoLoop from "../Component/LogoLoop";
@@ -9,7 +9,6 @@ import HeroProjectReference from "../Component/hero_project_reference";
 import PartnerCard from "../Component/partner_card";
 import CustomerCard from "../Component/customer_card";
 import ChatBot from "../Component/ChatBot";
-import CacheDebugPanel from "../Component/CacheDebugPanel";
 import "./home.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -20,78 +19,52 @@ import "swiper/css/navigation";
 const Home = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const cachedApi = useCachedApi();
-  const [transformedPartners, setTransformedPartners] = useState([]);
-  const [transformedCustomers, setTransformedCustomers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { partnerships, customers, isLoading, isError, error } = useHomePageData();
 
-  // Fetch partnerships and customers data with caching
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [partnershipsData, customersData] = await Promise.all([
-          cachedApi.partnerships.getAll(),
-          cachedApi.customers.getAll()
-        ]);
+  // Transform data using useMemo for performance
+  const transformedPartners = useMemo(() => {
+    return partnerships.map((partner, index) => {
+      const imageUrl = partner.partner_image?.[0];
+      const fallbackImage = `https://via.placeholder.com/100x80/4B5563/FFFFFF?text=${encodeURIComponent(
+        partner.partner_name || "Partner"
+      )}`;
+      const finalImage = imageUrl && imageUrl.trim() !== "" ? imageUrl : fallbackImage;
 
-        // Transform partnerships data
-        const partnerLogos = partnershipsData.map((partner, index) => {
-          const imageUrl = partner.partner_image?.[0];
-          const fallbackImage = `https://via.placeholder.com/100x80/4B5563/FFFFFF?text=${encodeURIComponent(
-            partner.partner_name || "Partner"
-          )}`;
-          const finalImage = imageUrl && imageUrl.trim() !== "" ? imageUrl : fallbackImage;
+      return {
+        node: (
+          <PartnerCard
+            key={`partner-${partner.id || index}`}
+            name={partner.partner_name}
+            image={finalImage}
+            type="partner"
+          />
+        ),
+        title: partner.partner_name,
+      };
+    });
+  }, [partnerships]);
 
-          return {
-            node: (
-              <PartnerCard
-                key={`partner-${partner.id || index}`}
-                name={partner.partner_name}
-                image={finalImage}
-                type="partner"
-              />
-            ),
-            title: partner.partner_name,
-          };
-        });
+  const transformedCustomers = useMemo(() => {
+    return customers.map((customer, index) => {
+      const imageUrl = customer.customer_image?.[0];
+      const fallbackImage = `https://via.placeholder.com/100x80/3B82F6/FFFFFF?text=${encodeURIComponent(
+        customer.customer_name || "Customer"
+      )}`;
+      const finalImage = imageUrl && imageUrl.trim() !== "" ? imageUrl : fallbackImage;
 
-        // Transform customers data
-        const customerLogos = customersData.map((customer, index) => {
-          const imageUrl = customer.customer_image?.[0];
-          const fallbackImage = `https://via.placeholder.com/100x80/3B82F6/FFFFFF?text=${encodeURIComponent(
-            customer.customer_name || "Customer"
-          )}`;
-          const finalImage = imageUrl && imageUrl.trim() !== "" ? imageUrl : fallbackImage;
-
-          return {
-            node: (
-              <CustomerCard
-                key={`customer-${customer.id || index}`}
-                name={customer.customer_name}
-                image={finalImage}
-                type="customer"
-              />
-            ),
-            title: customer.customer_name,
-          };
-        });
-
-        setTransformedPartners(partnerLogos);
-        setTransformedCustomers(customerLogos);
-      } catch (err) {
-        console.error('Error fetching data:', err);
-        setError('Failed to load data');
-        setTransformedPartners([]);
-        setTransformedCustomers([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [cachedApi]);
+      return {
+        node: (
+          <CustomerCard
+            key={`customer-${customer.id || index}`}
+            name={customer.customer_name}
+            image={finalImage}
+            type="customer"
+          />
+        ),
+        title: customer.customer_name,
+      };
+    });
+  }, [customers]);
 
   const handleViewProducts = () => {
     navigate("/product");
@@ -445,13 +418,13 @@ const Home = () => {
             {t('home.partners')}
           </h2>
 
-          {loading ? (
+          {isLoading ? (
             <div className="text-center text-white mb-8 lg:mb-10 xl:mb-12 2xl:mb-12 3xl:mb-12">
               {t('common.loading')}
             </div>
           ) : error ? (
             <div className="text-center text-red-400 mb-8 lg:mb-10 xl:mb-12 2xl:mb-12 3xl:mb-12">
-              {error}
+              {error?.message || 'Failed to load partnerships'}
             </div>
           ) : (
             <div className="flex flex-wrap justify-center gap-4 lg:gap-6 xl:gap-8 2xl:gap-8 3xl:gap-8 mb-4 lg:mb-5 2xl:mb-5 3xl:mb-5">
@@ -467,10 +440,10 @@ const Home = () => {
             {t('home.customers')}
           </h2>
 
-          {loading ? (
+          {isLoading ? (
             <div className="text-center text-white">Loading customers...</div>
           ) : error ? (
-            <div className="text-center text-red-400">{error}</div>
+            <div className="text-center text-red-400">{error?.message || 'Failed to load customers'}</div>
           ) : (
             <div>
               <div
@@ -531,9 +504,6 @@ const Home = () => {
 
       {/* ChatBot */}
       <ChatBot />
-      
-      {/* Cache Debug Panel - Remove this line if you don't want to see cache stats */}
-      <CacheDebugPanel isVisible={true} />
     </div>
   );
 };

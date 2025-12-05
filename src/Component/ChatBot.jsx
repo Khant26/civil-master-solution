@@ -6,31 +6,14 @@ const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isRequestFormOpen } = useRequestForm();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [messages, setMessages] = useState(() => {
-    // Load messages from sessionStorage (clears on browser close) or use default
-    const savedMessages = sessionStorage.getItem('chatbot_messages');
-    if (savedMessages) {
-      try {
-        const parsed = JSON.parse(savedMessages);
-        // Convert timestamp strings back to Date objects
-        return parsed.map(msg => ({
-          ...msg,
-          timestamp: new Date(msg.timestamp)
-        }));
-      } catch (error) {
-        console.error('Error parsing saved messages:', error);
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      text: "Hello! I'm CMS Bot. How can I help you today?",
+      sender: 'bot',
+      timestamp: new Date()
       }
-    }
-    // Default message if no saved messages
-    return [
-      {
-        id: 1,
-        text: "Hello! I'm CMS Bot. How can I help you today?",
-        sender: 'bot',
-        timestamp: new Date()
-      }
-    ];
-  });
+    ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
@@ -52,11 +35,6 @@ const ChatBot = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
-
-  // Save messages to sessionStorage whenever messages change (clears on browser close)
-  useEffect(() => {
-    sessionStorage.setItem('chatbot_messages', JSON.stringify(messages));
   }, [messages]);
 
   useEffect(() => {
@@ -122,7 +100,6 @@ const ChatBot = () => {
       }
     ];
     setMessages(defaultMessage);
-    sessionStorage.setItem('chatbot_messages', JSON.stringify(defaultMessage));
   };
 
   // Determine if chatbot should be hidden (on mobile when request form is open)

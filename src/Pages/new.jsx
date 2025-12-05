@@ -5,43 +5,24 @@ import Footer from '../Component/footer';
 import NewsCards from '../Component/news_cards';
 import ContentRenderer from '../Component/ContentRenderer';
 import ChatBot from '../Component/ChatBot';
-import { useCachedApi } from '../hooks/useCachedApi';
+import { useNews } from '../hooks/useApiQueries';
 
 const New = () => {
-  const cachedApi = useCachedApi();
-  const [newsData, setNewsData] = useState([]);
+  const { data: newsData = [], isLoading, error } = useNews();
   const [selectedNews, setSelectedNews] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
   useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        setLoading(true);
-        const newsData = await cachedApi.news.getAll();
-        console.log('News data:', newsData);
-        setNewsData(newsData);
-
-        // Check for news ID in URL parameters
-        const newsId = searchParams.get('id');
-        if (newsId) {
-          const news = response.data.find(item => item.id == newsId || item.id == null && response.data.indexOf(item) == newsId);
-          setSelectedNews(news || null);
-        }
-      } catch (err) {
-        console.error('Error fetching news:', err);
-        setError('Failed to load news');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNews();
-  }, [searchParams, cachedApi]);
+    // Check for news ID in URL parameters
+    const newsId = searchParams.get('id');
+    if (newsId && newsData.length > 0) {
+      const news = newsData.find(item => item.id == newsId || item.id == null && newsData.indexOf(item) == newsId);
+      setSelectedNews(news || null);
+    }
+  }, [searchParams, newsData]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -51,7 +32,7 @@ const New = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const displayedNews = newsData.slice(startIndex, startIndex + itemsPerPage);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-900">
         <Nav />

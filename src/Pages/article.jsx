@@ -5,14 +5,11 @@ import Footer from '../Component/footer';
 import ArticleRow from '../Component/article_row';
 import ContentRenderer from '../Component/ContentRenderer';
 import ChatBot from '../Component/ChatBot';
-import { useCachedApi } from '../hooks/useCachedApi';
+import { useArticles } from '../hooks/useApiQueries';
 
 const Article = () => {
-  const cachedApi = useCachedApi();
-  const [articlesData, setArticlesData] = useState([]);
+  const { data: articlesData = [], isLoading, error } = useArticles();
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -41,40 +38,24 @@ const Article = () => {
   };
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        setLoading(true);
-        const articlesData = await cachedApi.articles.getAll();
-        console.log('Articles data:', articlesData);
-        setArticlesData(articlesData);
-
-        // Check for article ID in URL parameters
-        const articleId = searchParams.get('id');
-        if (articleId) {
-          // First try to find by ID, then by index if ID is not found
-          let article = articlesData.find(item => item.id == articleId);
-          if (!article) {
-            // If not found by ID, try by index (for fallback)
-            const index = parseInt(articleId);
-            if (!isNaN(index) && index >= 0 && index < articlesData.length) {
-              article = articlesData[index];
-            }
-          }
-          if (article) {
-            console.log('Selected article PDF URL:', article.pdf_file);
-          }
-          setSelectedArticle(article || null);
+    // Check for article ID in URL parameters when data is available
+    const articleId = searchParams.get('id');
+    if (articleId && articlesData.length > 0) {
+      // First try to find by ID, then by index if ID is not found
+      let article = articlesData.find(item => item.id == articleId);
+      if (!article) {
+        // If not found by ID, try by index (for fallback)
+        const index = parseInt(articleId);
+        if (!isNaN(index) && index >= 0 && index < articlesData.length) {
+          article = articlesData[index];
         }
-      } catch (err) {
-        console.error('Error fetching articles:', err);
-        setError('Failed to load articles');
-      } finally {
-        setLoading(false);
       }
-    };
-
-    fetchArticles();
-  }, [searchParams, cachedApi]);
+      if (article) {
+        console.log('Selected article PDF URL:', article.pdf_file);
+        setSelectedArticle(article || null);
+      }
+    }
+  }, [searchParams, articlesData]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -85,7 +66,7 @@ const Article = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-900">
         <Nav />
