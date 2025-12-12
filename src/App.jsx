@@ -10,6 +10,7 @@ const ProjectReference = lazy(() => import('./Pages/project_reference'));
 const NewArticle = lazy(() => import('./Pages/new_article'));
 const New = lazy(() => import('./Pages/new'));
 const Article = lazy(() => import('./Pages/article'));
+const NotFound = lazy(() => import('./Pages/NotFound'));
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
             <Route path="/news-article" element={<NewArticle />} />
             <Route path="/new" element={<New />} />
             <Route path="/article" element={<Article />} />
+            {/* Catch all unmatched routes - Must be last */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </Router>
