@@ -304,7 +304,7 @@ const Article = () => {
                         {windowWidth <= 450 ? (
                           // Mobile view - PDF download only, no text content
                           <div className="w-full min-h-[400px] flex items-center justify-center">
-                            {article.pdf_file ? (
+                            {article.pdf_file && article.pdf_file !== null ? (
                               <div className="w-full max-w-sm mx-auto">
                                 {/* PDF Download Section for Mobile */}
                                 <div className="p-6 bg-gradient-to-r from-cyan-900/30 to-blue-900/30 rounded-xl border border-cyan-500/30 text-center">
@@ -319,6 +319,10 @@ const Article = () => {
                                     href={article.pdf_file}
                                     download
                                     className="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors text-base w-full justify-center"
+                                    onError={(e) => {
+                                      console.error('PDF download failed:', article.pdf_file);
+                                      e.preventDefault();
+                                    }}
                                   >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -329,8 +333,17 @@ const Article = () => {
                                 </div>
                               </div>
                             ) : (
-                              <div className="text-center py-12">
-                                <div className="text-gray-400 text-sm">No PDF available for download</div>
+                              <div className="w-full max-w-sm mx-auto">
+                                <div className="p-6 bg-gray-800/30 rounded-xl border border-gray-600/30 text-center">
+                                  <div className="bg-gray-600 p-4 rounded-full w-16 h-16 mx-auto mb-4">
+                                    <svg className="w-8 h-8 text-gray-300 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                  </div>
+                                  <h3 className="text-gray-300 font-bold text-lg mb-2">PDF Not Available</h3>
+                                  <p className="text-gray-400 text-sm mb-4">This article is currently only available in web format</p>
+                                  <p className="text-gray-500 text-xs">Check back later for PDF version</p>
+                                </div>
                               </div>
                             )}
                           </div>
