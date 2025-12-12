@@ -1,23 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { apiService } from '../services/api';
+import { apiService, chatBotStorage } from '../services/api';
 import { useRequestForm } from '../context/RequestFormContext';
 
 const ChatBot = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(() => chatBotStorage.loadState().isOpen);
   const { isRequestFormOpen } = useRequestForm();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hello! I'm CMS Bot. How can I help you today?",
-      sender: 'bot',
-      timestamp: new Date()
-      }
-    ]);
+  const [messages, setMessages] = useState(() => chatBotStorage.loadMessages());
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Save chat state to localStorage whenever it changes
+  useEffect(() => {
+    chatBotStorage.saveState(isOpen);
+  }, [isOpen]);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    chatBotStorage.saveMessages(messages);
+  }, [messages]);
 
   // Track window width for responsive behavior
   useEffect(() => {
@@ -91,6 +94,7 @@ const ChatBot = () => {
   };
 
   const clearChat = () => {
+    chatBotStorage.clearMessages();
     const defaultMessage = [
       {
         id: 1,
@@ -146,6 +150,16 @@ const ChatBot = () => {
             </div>
             <div className="flex items-center space-x-2">
               <button
+                onClick={clearChat}
+                className="text-white hover:text-gray-200 transition-colors p-1"
+                aria-label="Clear chat history"
+                title="Clear chat history"
+              >
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+              <button
                 onClick={toggleChat}
                 className="text-white hover:text-gray-200 transition-colors"
                 aria-label="Close chat"
@@ -175,7 +189,10 @@ const ChatBot = () => {
                   <p className={`text-xs sm:text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-sm 3xl:text-base mt-1 ${
                     message.sender === 'user' ? 'text-cyan-100' : 'text-gray-500'
                   }`}>
-                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {message.timestamp && typeof message.timestamp.toLocaleTimeString === 'function' 
+                      ? message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                      : new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    }
                   </p>
                 </div>
               </div>
