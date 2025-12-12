@@ -1,26 +1,31 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { RequestFormProvider } from './context/RequestFormContext';
-import Home from './Pages/home';
-import Product from './Pages/product';
-import ProjectReference from './Pages/project_reference';
-import NewArticle from './Pages/new_article';
-import New from './Pages/new';
-import Article from './Pages/article';
+import LoadingSpinner from './components/LoadingSpinner';
+
+// Lazy load components
+const Home = lazy(() => import('./Pages/home'));
+const Product = lazy(() => import('./Pages/product'));
+const ProjectReference = lazy(() => import('./Pages/project_reference'));
+const NewArticle = lazy(() => import('./Pages/new_article'));
+const New = lazy(() => import('./Pages/new'));
+const Article = lazy(() => import('./Pages/article'));
 
 function App() {
   return (
     <RequestFormProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/projects-reference" element={<ProjectReference />} />
-          <Route path="/news-article" element={<NewArticle />} />
-          <Route path="/new" element={<New />} />
-          <Route path="/article" element={<Article />} />
-        </Routes>
+        <Suspense fallback={<LoadingSpinner fullScreen={true} size="large" text="Loading page..." />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/projects-reference" element={<ProjectReference />} />
+            <Route path="/news-article" element={<NewArticle />} />
+            <Route path="/new" element={<New />} />
+            <Route path="/article" element={<Article />} />
+          </Routes>
+        </Suspense>
       </Router>
     </RequestFormProvider>
   );

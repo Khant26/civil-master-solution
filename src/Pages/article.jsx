@@ -5,6 +5,7 @@ import Footer from '../Component/footer';
 import ArticleRow from '../Component/article_row';
 import ContentRenderer from '../Component/ContentRenderer';
 import ChatBot from '../Component/ChatBot';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { useArticles } from '../hooks/useApiQueries';
 
 const Article = () => {
@@ -68,24 +69,38 @@ const Article = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-[#000A14]">
         <Nav />
-        <div className="flex items-center justify-center h-64">
-          <div className="text-white text-xl">Loading...</div>
-        </div>
+        <LoadingSpinner 
+          fullScreen={false} 
+          size="large" 
+          text="Loading articles..." 
+        />
         <Footer />
+        <ChatBot />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-[#000A14]">
         <Nav />
-        <div className="flex items-center justify-center h-64">
-          <div className="text-red-400 text-xl">{error}</div>
+        <div className="flex items-center justify-center p-8">
+          <div className="text-center">
+            <div className="text-red-400 text-6xl mb-4">⚠️</div>
+            <h2 className="text-2xl font-bold text-white mb-2">Failed to load articles</h2>
+            <p className="text-gray-300 mb-4">Please check your connection and try again.</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg transition-colors"
+            >
+              Reload Page
+            </button>
+          </div>
         </div>
         <Footer />
+        <ChatBot />
       </div>
     );
   }

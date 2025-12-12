@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ChatBot from '../Component/ChatBot';
 
 const RequestMoreInformation = ({ onSubmit, onCancel }) => {
   const [form, setForm] = useState({
@@ -110,6 +111,9 @@ const RequestMoreInformation = ({ onSubmit, onCancel }) => {
           </div>
         </form>
       </div>
+      
+      {/* ChatBot */}
+      <ChatBot />
     </div>
   );
 };

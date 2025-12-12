@@ -9,6 +9,7 @@ import HeroProjectReference from "../Component/hero_project_reference";
 import PartnerCard from "../Component/partner_card";
 import CustomerCard from "../Component/customer_card";
 import ChatBot from "../Component/ChatBot";
+import LoadingSpinner from "../components/LoadingSpinner";
 import "./home.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -21,7 +22,7 @@ const Home = () => {
   const navigate = useNavigate();
   const { partnerships, customers, isLoading, isError, error } = useHomePageData();
 
-  // Transform data using useMemo for performance
+  // Transform data using useMemo for performance - MUST be called before conditional returns
   const transformedPartners = useMemo(() => {
     return partnerships.map((partner, index) => {
       const imageUrl = partner.partner_image?.[0];
@@ -65,6 +66,44 @@ const Home = () => {
       };
     });
   }, [customers]);
+
+  // Show loading state while data is being fetched
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Nav />
+        <LoadingSpinner 
+          fullScreen={false} 
+          size="large" 
+          text="Loading content..." 
+        />
+        <ChatBot />
+      </div>
+    );
+  }
+
+  // Show error state if API calls fail
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Nav />
+        <div className="flex items-center justify-center p-8">
+          <div className="text-center">
+            <div className="text-red-500 text-6xl mb-4">⚠️</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Something went wrong</h2>
+            <p className="text-gray-600 mb-4">Failed to load page content. Please try again.</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg transition-colors"
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
+        <ChatBot />
+      </div>
+    );
+  }
 
   const handleViewProducts = () => {
     navigate("/product");
