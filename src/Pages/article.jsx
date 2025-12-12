@@ -302,75 +302,41 @@ const Article = () => {
                         </style>
                         {/* Manga-like reading: Show only PDF on mobile (≤450px), hide article content completely */}
                         {windowWidth <= 450 ? (
-                          // Mobile view - Show article content with PDF download option
-                          <div className="w-full">
-                            {/* PDF Download Section for Mobile */}
-                            {article.pdf_file && (
-                              <div className="mb-6 p-4 bg-gradient-to-r from-cyan-900/30 to-blue-900/30 rounded-lg border border-cyan-500/30">
-                                <div className="flex items-center gap-3">
-                                  <div className="bg-cyan-600 p-2 rounded-lg">
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          // Mobile view - PDF download only, no text content
+                          <div className="w-full min-h-[400px] flex items-center justify-center">
+                            {article.pdf_file ? (
+                              <div className="w-full max-w-sm mx-auto">
+                                {/* PDF Download Section for Mobile */}
+                                <div className="p-6 bg-gradient-to-r from-cyan-900/30 to-blue-900/30 rounded-xl border border-cyan-500/30 text-center">
+                                  <div className="bg-cyan-600 p-4 rounded-full w-16 h-16 mx-auto mb-4">
+                                    <svg className="w-8 h-8 text-white mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                   </div>
-                                  <div className="flex-1">
-                                    <p className="text-white font-semibold text-sm">Download PDF Version</p>
-                                    <p className="text-gray-300 text-xs">Read the full article offline on your device</p>
-                                  </div>
+                                  <h3 className="text-white font-bold text-lg mb-2">PDF Document</h3>
+                                  <p className="text-gray-300 text-sm mb-6">Download the full article to read offline on your device</p>
                                   <a 
                                     href={article.pdf_file}
                                     download
-                                    className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm flex items-center gap-2"
+                                    className="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors text-base w-full justify-center"
                                   >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                     </svg>
-                                    Download
+                                    Download PDF
                                   </a>
+                                  <p className="text-gray-400 text-xs mt-3">For the best reading experience, use a laptop or tablet</p>
                                 </div>
                               </div>
-                            )}
-                            
-                            {/* Show article content on mobile */}
-                            {article.content_html ? (
-                              <div 
-                                dangerouslySetInnerHTML={{ __html: article.content_html }} 
-                                className="prose prose-invert max-w-none article-content text-sm"
-                              />
                             ) : (
-                              <ContentRenderer content={article.content} />
+                              <div className="text-center py-12">
+                                <div className="text-gray-400 text-sm">No PDF available for download</div>
+                              </div>
                             )}
                           </div>
                         ) : (
-                          // Desktop view - Show article content
+                          // Desktop view - Show article content only, no PDF download section
                           <>
-                            {/* PDF Availability Notice for Desktop */}
-                            {article.pdf_file && (
-                              <div className="mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-                                <div className="flex items-center gap-3">
-                                  <svg className="w-5 h-5 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                  </svg>
-                                  <div className="flex-1">
-                                    <p className="text-white text-sm font-medium">PDF Version Available</p>
-                                    <p className="text-gray-300 text-xs">This article is also available as a PDF document</p>
-                                  </div>
-                                  <a 
-                                    href={article.pdf_file}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="bg-cyan-600 hover:bg-cyan-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors"
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                      e.target.parentElement.innerHTML = '<span class="text-gray-400 text-xs">PDF temporarily unavailable</span>';
-                                    }}
-                                  >
-                                    View PDF
-                                  </a>
-                                </div>
-                              </div>
-                            )}
-                            
                             {article.content_html ? (
                             <>
                               {(() => {
