@@ -165,14 +165,14 @@ const ChatBot = () => {
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-xs sm:max-w-sm md:max-w-xs lg:max-w-md xl:max-w-lg 2xl:max-w-xl 3xl:max-w-2xl px-3 sm:px-4 md:px-4 lg:px-4 xl:px-5 2xl:px-6 3xl:px-6 py-2 rounded-lg ${
+                  className={`max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[320px] xl:max-w-[350px] 2xl:max-w-[380px] 3xl:max-w-[400px] px-3 sm:px-4 md:px-4 lg:px-4 xl:px-5 2xl:px-6 3xl:px-6 py-2 rounded-lg ${
                     message.sender === 'user'
                       ? 'bg-cyan-500 text-white rounded-br-none'
                       : 'bg-gray-100 text-gray-800 rounded-bl-none'
                   }`}
                 >
-                  <p className="text-sm sm:text-base md:text-base lg:text-base xl:text-lg 2xl:text-xl 3xl:text-2xl">{message.text}</p>
-                  <p className={`text-xs sm:text-sm md:text-sm lg:text-sm xl:text-base 2xl:text-lg 3xl:text-xl mt-1 ${
+                  <p className="text-sm sm:text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base 3xl:text-lg leading-relaxed">{message.text}</p>
+                  <p className={`text-xs sm:text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-sm 3xl:text-base mt-1 ${
                     message.sender === 'user' ? 'text-cyan-100' : 'text-gray-500'
                   }`}>
                     {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -188,7 +188,7 @@ const ChatBot = () => {
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                   </div>
-                  <span className="text-sm sm:text-base md:text-base lg:text-base xl:text-lg 2xl:text-xl 3xl:text-2xl text-gray-500">Typing...</span>
+                  <span className="text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm 2xl:text-sm 3xl:text-base text-gray-500 ml-2">Typing...</span>
                 </div>
               </div>
             )}
