@@ -302,38 +302,76 @@ const Article = () => {
                         </style>
                         {/* Manga-like reading: Show only PDF on mobile (≤450px), hide article content completely */}
                         {windowWidth <= 450 ? (
-                          // Mobile view - PDF only (manga-like reading)
-                          article.pdf_file ? (
-                            <div className="w-full h-screen flex flex-col">
-                              {console.log('Rendering PDF with URL:', article.pdf_file)}
-                              <object
-                                data={article.pdf_file}
-                                type="application/pdf"
-                                className="w-full flex-1 border-0 rounded-lg"
-                                style={{ height: 'calc(100vh - 120px)', minHeight: '600px' }}
-                                aria-label={`${article.article_title} PDF`}
-                              >
-                                <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-                                  <p className="text-white mb-4">Visit with Laptop or ipad to read directly</p>
+                          // Mobile view - Show article content with PDF download option
+                          <div className="w-full">
+                            {/* PDF Download Section for Mobile */}
+                            {article.pdf_file && (
+                              <div className="mb-6 p-4 bg-gradient-to-r from-cyan-900/30 to-blue-900/30 rounded-lg border border-cyan-500/30">
+                                <div className="flex items-center gap-3">
+                                  <div className="bg-cyan-600 p-2 rounded-lg">
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="text-white font-semibold text-sm">Download PDF Version</p>
+                                    <p className="text-gray-300 text-xs">Read the full article offline on your device</p>
+                                  </div>
+                                  <a 
+                                    href={article.pdf_file}
+                                    download
+                                    className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm flex items-center gap-2"
+                                  >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                    </svg>
+                                    Download
+                                  </a>
+                                </div>
+                              </div>
+                            )}
+                            
+                            {/* Show article content on mobile */}
+                            {article.content_html ? (
+                              <div 
+                                dangerouslySetInnerHTML={{ __html: article.content_html }} 
+                                className="prose prose-invert max-w-none article-content text-sm"
+                              />
+                            ) : (
+                              <ContentRenderer content={article.content} />
+                            )}
+                          </div>
+                        ) : (
+                          // Desktop view - Show article content
+                          <>
+                            {/* PDF Availability Notice for Desktop */}
+                            {article.pdf_file && (
+                              <div className="mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+                                <div className="flex items-center gap-3">
+                                  <svg className="w-5 h-5 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                  </svg>
+                                  <div className="flex-1">
+                                    <p className="text-white text-sm font-medium">PDF Version Available</p>
+                                    <p className="text-gray-300 text-xs">This article is also available as a PDF document</p>
+                                  </div>
                                   <a 
                                     href={article.pdf_file}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-cyan-400 hover:text-cyan-300 underline"
+                                    className="bg-cyan-600 hover:bg-cyan-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors"
+                                    onError={(e) => {
+                                      e.target.style.display = 'none';
+                                      e.target.parentElement.innerHTML = '<span class="text-gray-400 text-xs">PDF temporarily unavailable</span>';
+                                    }}
                                   >
-                                    Click here to download the PDF
+                                    View PDF
                                   </a>
                                 </div>
-                              </object>
-                            </div>
-                          ) : (
-                            <div className="text-center py-12">
-                              <div className="text-gray-400 text-sm">No PDF available for mobile reading</div>
-                            </div>
-                          )
-                        ) : (
-                          // Desktop view - Show article content
-                          article.content_html ? (
+                              </div>
+                            )}
+                            
+                            {article.content_html ? (
                             <>
                               {(() => {
                                 // No need to process HTML - images are already base64 encoded by backend
@@ -351,7 +389,8 @@ const Article = () => {
                             </>
                           ) : (
                             <ContentRenderer content={article.content} />
-                          )
+                          )}
+                          </>
                         )}
                       </div>
 
