@@ -7,7 +7,6 @@ import Footer from "../Component/footer";
 import LogoLoop from "../Component/LogoLoop";
 import HeroProjectReference from "../Component/hero_project_reference";
 import PartnerCard from "../Component/partner_card";
-import CustomerCard from "../Component/customer_card";
 import ChatBot from "../Component/ChatBot";
 import LoadingSpinner from "../components/LoadingSpinner";
 import "./home.css";
@@ -20,7 +19,7 @@ import "swiper/css/navigation";
 const Home = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const { partnerships, customers, isLoading, isError, error } = useHomePageData();
+  const { partnerships, isLoading, isError, error } = useHomePageData();
 
   // Transform data using useMemo for performance - MUST be called before conditional returns
   const transformedPartners = useMemo(() => {
@@ -45,27 +44,7 @@ const Home = () => {
     });
   }, [partnerships]);
 
-  const transformedCustomers = useMemo(() => {
-    return customers.map((customer, index) => {
-      const imageUrl = customer.customer_image?.[0];
-      const fallbackImage = `https://via.placeholder.com/100x80/3B82F6/FFFFFF?text=${encodeURIComponent(
-        customer.customer_name || "Customer"
-      )}`;
-      const finalImage = imageUrl && imageUrl.trim() !== "" ? imageUrl : fallbackImage;
 
-      return {
-        node: (
-          <CustomerCard
-            key={`customer-${customer.id || index}`}
-            name={customer.customer_name}
-            image={finalImage}
-            type="customer"
-          />
-        ),
-        title: customer.customer_name,
-      };
-    });
-  }, [customers]);
 
   // Show loading state while data is being fetched
   if (isLoading) {
@@ -475,66 +454,7 @@ const Home = () => {
             </div>
           )}
 
-          <h2 className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-4xl 3xl:text-4xl font-bold text-white text-center mb-2">
-            {t('home.customers')}
-          </h2>
 
-          {isLoading ? (
-            <div className="text-center text-white">Loading customers...</div>
-          ) : error ? (
-            <div className="text-center text-red-400">{error?.message || 'Failed to load customers'}</div>
-          ) : (
-            <div>
-              <div
-                style={{
-                  height: "100px",
-                  position: "relative",
-                  overflow: "hidden !important",
-                  scrollbarWidth: "none" /* Firefox */,
-                  msOverflowStyle: "none" /* Internet Explorer and Edge */,
-                  WebkitOverflowScrolling: "touch",
-                }}
-                className="[&::-webkit-scrollbar]:hidden overflow-hidden"
-              >
-                <LogoLoop
-                  logos={transformedCustomers}
-                  speed={80}
-                  direction="right"
-                  logoHeight={80}
-                  gap={40}
-                  pauseOnHover
-                  scaleOnHover
-                  fadeOut
-                  fadeOutColor="#111827"
-                  ariaLabel="Customer logos"
-                />
-              </div>
-              <div
-                style={{
-                  height: "100px",
-                  position: "relative",
-                  overflow: "hidden !important",
-                  scrollbarWidth: "none" /* Firefox */,
-                  msOverflowStyle: "none" /* Internet Explorer and Edge */,
-                  WebkitOverflowScrolling: "touch",
-                }}
-                className="[&::-webkit-scrollbar]:hidden overflow-hidden"
-              >
-                <LogoLoop
-                  logos={transformedCustomers}
-                  speed={80}
-                  direction="right"
-                  logoHeight={80}
-                  gap={40}
-                  pauseOnHover
-                  scaleOnHover
-                  fadeOut
-                  fadeOutColor="#111827"
-                  ariaLabel="Customer logos"
-                />
-              </div>
-            </div>
-          )}
         </div>
       </section>
 

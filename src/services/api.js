@@ -89,12 +89,6 @@ export const apiService = {
     getById: (id) => api.get(`/partnerships/${id}/`),
   },
 
-  // Customer APIs
-  customers: {
-    getAll: () => api.get('/customerships/'),
-    getById: (id) => api.get(`/customerships/${id}/`),
-  },
-
   // Product APIs
   products: {
     getAll: () => api.get('/products/'),

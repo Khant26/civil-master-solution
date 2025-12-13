@@ -1,0 +1,17 @@
+# Civil Master Solution - Robots.txt
+User-agent: *
+Allow: /
+Allow: /home
+Allow: /product
+Allow: /projects-reference
+Allow: /news-article
+Allow: /new
+Allow: /article
+
+# Disallow admin and private routes
+Disallow: /admin
+Disallow: /login
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://cms-testing-frontend.vercel.app/sitemap.xml

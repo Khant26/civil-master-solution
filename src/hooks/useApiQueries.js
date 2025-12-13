@@ -4,7 +4,6 @@ import { apiService } from '../services/api';
 // Query Keys - centralized for consistency
 export const QUERY_KEYS = {
   PARTNERSHIPS: ['partnerships'],
-  CUSTOMERS: ['customers'], 
   PRODUCTS: ['products'],
   PROJECT_REFERENCES: ['projectReferences'],
   PROJECT_REFERENCE_FAVORITES: ['projectReferences', 'favorites'],
@@ -13,7 +12,6 @@ export const QUERY_KEYS = {
   NEWS_BY_ID: (id) => ['news', id],
   ARTICLE_BY_ID: (id) => ['articles', id],
   PARTNERSHIP_BY_ID: (id) => ['partnerships', id],
-  CUSTOMER_BY_ID: (id) => ['customers', id],
   PRODUCT_BY_ID: (id) => ['products', id],
   PROJECT_REFERENCE_BY_ID: (id) => ['projectReferences', id],
 };
@@ -35,30 +33,6 @@ export const usePartnership = (id) => {
     queryKey: QUERY_KEYS.PARTNERSHIP_BY_ID(id),
     queryFn: async () => {
       const response = await apiService.partnerships.getById(id);
-      return response.data;
-    },
-    enabled: !!id,
-    staleTime: 1000 * 60 * 5,
-  });
-};
-
-// Customer Hooks
-export const useCustomers = () => {
-  return useQuery({
-    queryKey: QUERY_KEYS.CUSTOMERS,
-    queryFn: async () => {
-      const response = await apiService.customers.getAll();
-      return response.data;
-    },
-    staleTime: 1000 * 60 * 5,
-  });
-};
-
-export const useCustomer = (id) => {
-  return useQuery({
-    queryKey: QUERY_KEYS.CUSTOMER_BY_ID(id),
-    queryFn: async () => {
-      const response = await apiService.customers.getById(id);
       return response.data;
     },
     enabled: !!id,
@@ -201,13 +175,11 @@ export const useSendChatbotMessage = () => {
 // Combined hook for home page data
 export const useHomePageData = () => {
   const partnershipsQuery = usePartnerships();
-  const customersQuery = useCustomers();
 
   return {
     partnerships: partnershipsQuery.data || [],
-    customers: customersQuery.data || [],
-    isLoading: partnershipsQuery.isLoading || customersQuery.isLoading,
-    isError: partnershipsQuery.isError || customersQuery.isError,
-    error: partnershipsQuery.error || customersQuery.error,
+    isLoading: partnershipsQuery.isLoading,
+    isError: partnershipsQuery.isError,
+    error: partnershipsQuery.error,
   };
 };
