@@ -10,23 +10,24 @@ const api = axios.create({
 });
 
 // ChatBot persistence helper functions
+// Using sessionStorage so chat history clears when tab is closed or page is refreshed
 const CHATBOT_STORAGE_KEY = 'chatbot_messages';
 const CHATBOT_STATE_KEY = 'chatbot_state';
 
 export const chatBotStorage = {
-  // Save chat messages to localStorage
+  // Save chat messages to sessionStorage (clears on tab close/refresh)
   saveMessages: (messages) => {
     try {
-      localStorage.setItem(CHATBOT_STORAGE_KEY, JSON.stringify(messages));
+      sessionStorage.setItem(CHATBOT_STORAGE_KEY, JSON.stringify(messages));
     } catch (error) {
       console.warn('Failed to save chat messages:', error);
     }
   },
 
-  // Load chat messages from localStorage
+  // Load chat messages from sessionStorage
   loadMessages: () => {
     try {
-      const saved = localStorage.getItem(CHATBOT_STORAGE_KEY);
+      const saved = sessionStorage.getItem(CHATBOT_STORAGE_KEY);
       if (saved) {
         const messages = JSON.parse(saved);
         // Convert timestamp strings back to Date objects
@@ -49,19 +50,19 @@ export const chatBotStorage = {
     ];
   },
 
-  // Save chatbot open/close state
+  // Save chatbot open/close state to sessionStorage
   saveState: (isOpen) => {
     try {
-      localStorage.setItem(CHATBOT_STATE_KEY, JSON.stringify({ isOpen }));
+      sessionStorage.setItem(CHATBOT_STATE_KEY, JSON.stringify({ isOpen }));
     } catch (error) {
       console.warn('Failed to save chatbot state:', error);
     }
   },
 
-  // Load chatbot open/close state
+  // Load chatbot open/close state from sessionStorage
   loadState: () => {
     try {
-      const saved = localStorage.getItem(CHATBOT_STATE_KEY);
+      const saved = sessionStorage.getItem(CHATBOT_STATE_KEY);
       if (saved) {
         return JSON.parse(saved);
       }
@@ -74,7 +75,7 @@ export const chatBotStorage = {
   // Clear chat history
   clearMessages: () => {
     try {
-      localStorage.removeItem(CHATBOT_STORAGE_KEY);
+      sessionStorage.removeItem(CHATBOT_STORAGE_KEY);
     } catch (error) {
       console.warn('Failed to clear chat messages:', error);
     }
