@@ -296,7 +296,7 @@ const Home = () => {
     className="bg-[#222E3B] px-8 xl:px-16 py-16"
   >
     {/* Header block (fixed height for alignment) */}
-    <div className="min-h-[200px] flex flex-col justify-end">
+    <div className="min-h-[100px] flex flex-col justify-end">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl xl:text-4xl font-bold text-white">
           About Us
@@ -332,7 +332,7 @@ const Home = () => {
     className="bg-white px-8 xl:px-16 py-16"
   >
     {/* Header block (same height as left) */}
-    <div className="min-h-[200px] flex flex-col justify-end">
+    <div className="min-h-[100px] flex flex-col justify-end">
       <div className="flex items-center justify-between">
         <img
           src="/images/ductil-logo.png"
