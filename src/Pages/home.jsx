@@ -289,73 +289,80 @@ const Home = () => {
       </div>
 
       {/* Desktop Section - Show only lg and above */}
-      <section className="hidden lg:grid grid-cols-1 lg:grid-cols-2 gap-0">
-        {/* About Us - Left Side */}
-        <div
-          className="py-12 lg:py-14 xl:py-16 2xl:py-16 3xl:py-16 px-6 lg:px-8 xl:px-8 2xl:px-12 3xl:px-12"
-          style={{ backgroundColor: "#222E3B" }}
-        >
-          <div className="mt-4 lg:mt-6 xl:mt-8 2xl:mt-8 3xl:mt-8 ml-0 lg:ml-1 xl:ml-[80px] 2xl:ml-24 3xl:ml-64">
-            <div className="flex flex-col lg:flex-row items-center lg:justify-between gap-4 lg:gap-0 xl:gap-12 2xl:gap-20 3xl:gap-20">
-              <h2 className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-4xl 3xl:text-4xl font-bold text-white mb-6 lg:mb-8 xl:mb-12 2xl:mb-12 3xl:mb-12">
-                About Us
-              </h2>
-              <img
-                src="/images/logo.png"
-                alt="DUCTIL"
-                className="h-12 lg:h-14 xl:h-16 2xl:h-16 3xl:h-16 lg:ml-20 xl:ml-32 2xl:ml-52 3xl:ml-52 mb-4 lg:mb-6 2xl:mb-6 3xl:mb-6 -mt-0 lg:-mt-2 xl:-mt-4 2xl:-mt-4 3xl:-mt-4"
-              />
-            </div>
-            <div className="mb-3 lg:mb-4 2xl:mb-4 3xl:mb-4">
-              <h3 className="text-white text-base lg:text-lg xl:text-xl 2xl:text-2xl 3xl:text-2xl font-bold mb-2">
-                CMS is a leading specialist in industrial flooring in Thailand.
-              </h3>
-            </div>
-            <p className="text-white sm:text-sm lg:text-base xl:text-lg 2xl:text-[20px] 3xl:text-[21px] leading-relaxed text-justify">
-              Founded with a vision to provide durable, safe, and
-              high-performance flooring systems, we have grown into a trusted
-              partner for factories, warehouses, logistics centers, and
-              commercial facilities. our success comes from engineering smarter
-              solutions, not just selling products. We deliver world-class,
-              tested materials with expert guidance from design to on-site
-              supervision. With custom-fit solutions and a reputation built on
-              trust, we help industries build stronger foundations for the
-              future.
-            </p>
-          </div>
-        </div>
+<section className="hidden lg:grid grid-cols-1 lg:grid-cols-2">
 
-        {/* Announcement - Right Side */}
-        <div
-          className="py-12 lg:py-[70px] xl:py-[80px] 2xl:py-16 3xl:py-16 px-6 lg:px-8 xl:px-8 2xl:px-12 3xl:px-12 mr-0 lg:mr-1 xl:mr-[80px] 2xl:mr-24 3xl:mr-64"
-          style={{ backgroundColor: "white" }}
-        >
-          <div className="flex flex-col lg:flex-row items-center lg:justify-between gap-4 lg:gap-0 xl:gap-8 2xl:gap-11 3xl:gap-11 lg:pl-[0px] xl:pl-[-10px] 2xl:pl-[0px] 3xl:pl-[0px] mb-4 lg:mb-6 xl:mb-6 2xl:mb-4.5 3xl:mb-6">
-            <img
-              src="/images/ductil-logo.png"
-              alt="DUCTIL"
-              className="h-16 lg:h-14 xl:h-20 2xl:h-24 3xl:h-24 mr-auto"
-            />
-            <h2 className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-4xl 3xl:text-4xl font-bold text-gray-900 text-right">
-              Announcement
-            </h2>
-          </div>
-          <div className="mb-3 lg:mb-10 2xl:mb-4 3xl:mb-4">
-            <h3 className="text-base lg:text-lg xl:text-xl 2xl:text-2xl 3xl:text-2xl font-bold text-gray-900 mb-2 lg:mb-[45px] xl:mb-[40px] 2xl:mb-[45px] text-left">
-              CMS has officially partnered with Ductil GmbH.
-            </h3>
-          </div>
-          <p className="text-gray-600 sm:text-sm lg:text-base xl:text-lg 2xl:text-[20px] 3xl:text-[21px] leading-relaxed text-justify">
-            Through this collaboration, we are joining forces with Ductil GmbH,
-            a German company led by Dr. Ralf Winterberg, who brings nearly 30
-            years of expertise in fiber technology. This partnership combines
-            CMS's deep understanding of the local market with Ductil's
-            cutting-edge German engineering and innovation.Together, we will
-            deliver international-quality, next-generation steel fiber solutions
-            tailored to the unique demands of Thailand's industrial sector.
-          </p>
-        </div>
-      </section>
+  {/* LEFT : About Us */}
+  <div
+    className="bg-[#222E3B] px-8 xl:px-16 py-16"
+  >
+    {/* Header block (fixed height for alignment) */}
+    <div className="min-h-[200px] flex flex-col justify-end">
+      <div className="flex items-center justify-between">
+        <h2 className="text-3xl xl:text-4xl font-bold text-white">
+          About Us
+        </h2>
+
+        <img
+          src="/images/logo.png"
+          alt="CMS"
+          className="h-14 xl:h-16"
+        />
+      </div>
+
+      <h3 className="mt-6 mb-8 text-lg xl:text-xl font-bold text-white">
+        CMS is a leading specialist in industrial flooring in Thailand.
+      </h3>
+    </div>
+
+    {/* Paragraph */}
+    <p className="text-white text-base xl:text-lg leading-relaxed text-justify">
+      Founded with a vision to provide durable, safe, and high-performance
+      flooring systems, we have grown into a trusted partner for factories,
+      warehouses, logistics centers, and commercial facilities. Our success
+      comes from engineering smarter solutions, not just selling products.
+      We deliver world-class, tested materials with expert guidance from
+      design to on-site supervision. With custom-fit solutions and a
+      reputation built on trust, we help industries build stronger
+      foundations for the future.
+    </p>
+  </div>
+
+  {/* RIGHT : Announcement */}
+  <div
+    className="bg-white px-8 xl:px-16 py-16"
+  >
+    {/* Header block (same height as left) */}
+    <div className="min-h-[200px] flex flex-col justify-end">
+      <div className="flex items-center justify-between">
+        <img
+          src="/images/ductil-logo.png"
+          alt="DUCTIL"
+          className="h-16 xl:h-20"
+        />
+
+        <h2 className="text-3xl xl:text-4xl font-bold text-gray-900">
+          Announcement
+        </h2>
+      </div>
+
+      <h3 className="mt-6 mb-8 text-lg xl:text-xl font-bold text-gray-900">
+        CMS has officially partnered with Ductil GmbH.
+      </h3>
+    </div>
+
+    {/* Paragraph */}
+    <p className="text-gray-600 text-base xl:text-lg leading-relaxed text-justify">
+      Through this collaboration, we are joining forces with Ductil GmbH, a
+      German company led by Dr. Ralf Winterberg, who brings nearly 30 years
+      of expertise in fiber technology. This partnership combines CMS’s deep
+      understanding of the local market with Ductil’s cutting-edge German
+      engineering and innovation. Together, we will deliver
+      international-quality, next-generation steel fiber solutions tailored
+      to the unique demands of Thailand’s industrial sector.
+    </p>
+  </div>
+
+</section>
 
       {/* Services Section */}
       <section
