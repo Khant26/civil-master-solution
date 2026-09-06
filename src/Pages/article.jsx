@@ -15,29 +15,6 @@ const Article = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  // Helper function to extract plain text from Slate JSON content or HTML
-  const getPlainTextPreview = (content, contentHtml) => {
-    // If HTML content exists, strip tags for preview
-    if (contentHtml) {
-      const tmp = document.createElement('div');
-      tmp.innerHTML = contentHtml;
-      const text = tmp.textContent || tmp.innerText || '';
-      return text.slice(0, 100) + (text.length > 100 ? '...' : '');
-    }
-    
-    // Fallback to Slate JSON parsing
-    if (typeof content === 'string') {
-      return content.slice(0, 100) + (content.length > 100 ? '...' : '');
-    }
-    if (Array.isArray(content)) {
-      const text = content.map(node => 
-        node.children?.map(child => child.text).join('') || ''
-      ).join(' ');
-      return text.slice(0, 100) + (text.length > 100 ? '...' : '');
-    }
-    return '';
-  };
-
   useEffect(() => {
     // Check for article ID in URL parameters when data is available
     const articleId = searchParams.get('id');
@@ -123,7 +100,6 @@ const Article = () => {
               {selectedArticle ? (
                 (() => {
                   const article = selectedArticle;
-                  const content = article.content || '';
 
                   return (
                     <div>

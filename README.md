@@ -1,16 +1,63 @@
-# React + Vite
+# Civil Master Solution Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Public-facing website for Civil Master Solution (CMS), an industrial flooring specialist in Thailand. The application presents CMS services, products, project references, news, and articles while integrating with the CMS backend for managed content and customer enquiries.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Responsive company and service pages
+- Product catalogue and product enquiry workflow
+- News, articles, and rich-content rendering
+- Project-reference showcase
+- English and Thai language support
+- API-backed content with TanStack Query
+- Embedded contact information, map, and chatbot interface
 
-## React Compiler
+## Tech stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 and Vite 7
+- React Router
+- TanStack Query and Axios
+- Tailwind CSS
+- TipTap HTML rendering
+- Swiper
 
-## Expanding the ESLint configuration
+## Local setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Requirements: Node.js 20 or newer and npm.
+
+```bash
+git clone https://github.com/Khant26/cms_frontend.git
+cd cms_frontend
+npm ci
+cp .env.example .env
+npm run dev
+```
+
+Set `VITE_API_URL` to the CMS API base URL. Do not commit `.env` files or credentials.
+
+## Available commands
+
+```bash
+npm run dev      # Start the development server
+npm run lint     # Run ESLint
+npm run build    # Create a production build
+npm run preview  # Preview the production build
+```
+
+## Quality checks
+
+Pull requests and pushes to the default branch run dependency installation, linting, and a production build through GitHub Actions.
+
+## Deployment
+
+The generated static site is written to `dist/`. Configure the production host with the correct `VITE_API_URL` at build time and ensure client-side routes fall back to `index.html`.
+
+## Current limitations
+
+- No automated component or end-to-end tests are included yet.
+- Production behavior depends on a compatible CMS backend and its CORS configuration.
+- The build currently reports non-blocking dependency CSS/browser-data maintenance warnings.
+
+## License
+
+No open-source license is currently declared. All rights are reserved unless a license is added by the repository owner.

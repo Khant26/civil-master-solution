@@ -75,7 +75,7 @@ const RequestMoreInformation = ({ onSubmit, onCancel, productName }) => {
         comments: '',
       });
       if (onSubmit) onSubmit(payload);
-    } catch (err) {
+    } catch {
       setError('Failed to submit your request. Please try again.');
     } finally {
       setSubmitting(false);

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 // Import translation files
 import enTranslations from '../locales/en.json';
@@ -58,6 +58,7 @@ export const LanguageProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components -- the hook is colocated with its provider
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (!context) {

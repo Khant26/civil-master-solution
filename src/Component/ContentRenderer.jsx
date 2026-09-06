@@ -17,7 +17,7 @@ const ContentRenderer = ({ content }) => {
   if (typeof content === 'string') {
     try {
       parsedContent = JSON.parse(content);
-    } catch (e) {
+    } catch {
       // If it's not valid JSON, check if it's HTML (from CKEditor)
       if (content.includes('<') && content.includes('>')) {
         return (

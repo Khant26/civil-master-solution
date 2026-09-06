@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 
 const RequestFormContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components -- the hook is colocated with its provider
 export const useRequestForm = () => {
   const context = useContext(RequestFormContext);
   if (!context) {

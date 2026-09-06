@@ -1,18 +1,6 @@
 import React from 'react';
 
-const NewsCards = ({ image, title, description, date, onClick, newsItem }) => {
-  // Extract plain text from Slate JSON content for description
-  const getPlainTextDescription = (content) => {
-    if (typeof content === 'string') {
-      return content;
-    }
-    if (Array.isArray(content)) {
-      return content.map(node => 
-        node.children?.map(child => child.text).join('') || ''
-      ).join(' ').slice(0, 100) + '...';
-    }
-    return '';
-  };
+const NewsCards = ({ image, title, onClick }) => {
   return (
     <div className="bg-gray-800 overflow-hidden hover:transform hover:scale-105 transition-transform duration-300">
       {/* Image */}

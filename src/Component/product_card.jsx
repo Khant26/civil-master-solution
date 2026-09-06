@@ -9,7 +9,6 @@ const ProductCard = ({
   benefit,
   performance,
   images = [],
-  imagePosition = "left",
   theme = "dark",
   layout = 1, // 1 or 2 for different layouts
   backgroundImage = null, // Background image URL for the content section
@@ -20,7 +19,7 @@ const ProductCard = ({
   const { openRequestForm, closeRequestForm } = useRequestForm();
 
   //to appear color for tablet and mobile
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [, setWindowWidth] = useState(window.innerWidth);
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -69,7 +68,7 @@ const ProductCard = ({
     setShowRequestInfo(false);
     closeRequestForm();
   };
-  const handleSubmitRequestInfo = (formData) => {
+  const handleSubmitRequestInfo = () => {
     // You can handle the form submission here (e.g., send to API)
     setShowRequestInfo(false);
     closeRequestForm();
