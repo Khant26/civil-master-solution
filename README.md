@@ -26,8 +26,8 @@ Public-facing website for Civil Master Solution (CMS), an industrial flooring sp
 Requirements: Node.js 20 or newer and npm.
 
 ```bash
-git clone https://github.com/Khant26/cms_frontend.git
-cd cms_frontend
+git clone https://github.com/Khant26/civil-master-solution-web.git
+cd civil-master-solution-web
 npm ci
 cp .env.example .env
 npm run dev
