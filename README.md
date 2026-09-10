@@ -2,6 +2,15 @@
 
 Public-facing website for Civil Master Solution (CMS), an industrial flooring specialist in Thailand. The application presents CMS services, products, project references, news, and articles while integrating with the CMS backend for managed content and customer enquiries.
 
+## Product branches
+
+| Branch | Application |
+|---|---|
+| [`main`](https://github.com/Khant26/civil-master-solution/tree/main) | Public company website |
+| [`api`](https://github.com/Khant26/civil-master-solution/tree/api) | Django CMS API contribution |
+
+The original frontend repository and backend fork remain available. The combined repository provides one product-level entry point while retaining contribution attribution.
+
 ## Live site
 
 https://www.civilmastersolution.com/
@@ -30,8 +39,8 @@ https://www.civilmastersolution.com/
 Requirements: Node.js 20 or newer and npm.
 
 ```bash
-git clone https://github.com/Khant26/civil-master-solution-web.git
-cd civil-master-solution-web
+git clone https://github.com/Khant26/civil-master-solution.git
+cd civil-master-solution
 npm ci
 cp .env.example .env
 npm run dev
