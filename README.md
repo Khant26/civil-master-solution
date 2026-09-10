@@ -3,6 +3,10 @@
 This is the backend API for **Civil Master Solution (CMS)** — a dynamic content management system where all data (products, news, projects, partners, customers, etc.) is managed by the **admin panel**.
 Public users can view the website, submit request forms, and interact with an AI-powered chatbot for inquiries.
 
+## Product repository
+
+This fork is also mirrored, with its history preserved, as the [`api`](https://github.com/Khant26/civil-master-solution/tree/api) branch of the combined [Civil Master Solution repository](https://github.com/Khant26/civil-master-solution). The original fork remains available for attribution and upstream comparison.
+
 ---
 
 ## Features
