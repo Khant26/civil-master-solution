@@ -2,6 +2,10 @@
 
 Public-facing website for Civil Master Solution (CMS), an industrial flooring specialist in Thailand. The application presents CMS services, products, project references, news, and articles while integrating with the CMS backend for managed content and customer enquiries.
 
+## Live site
+
+https://www.civilmastersolution.com/
+
 ## Features
 
 - Responsive company and service pages
