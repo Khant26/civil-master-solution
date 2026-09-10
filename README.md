@@ -1,4 +1,4 @@
-# CMS Backend (Django REST Framework)
+# Civil Master Solution API
 
 This is the backend API for **Civil Master Solution (CMS)** — a dynamic content management system where all data (products, news, projects, partners, customers, etc.) is managed by the **admin panel**.
 Public users can view the website, submit request forms, and interact with an AI-powered chatbot for inquiries.
